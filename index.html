@@ -99,7 +99,8 @@ function deleteItem(id ,price) {
   totalAmount = totalAmount - price;
   outputdiv.textContent = `Total Amount :Rs ${totalAmount}/-`;
   renderList(totalExpense);
-  alert("Expense Deleted")
+  alert("Expense Deleted");
+  return false;
 }
 function renderList(arrayOfList) {
   const outerHtml = arrayOfList.map((expenseItem) =>createListItem(expenseItem));
