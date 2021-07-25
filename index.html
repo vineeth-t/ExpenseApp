@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Parcel Sandbox</title>
+    <meta charset="UTF-8" />
+
+    <link rel="stylesheet" href="./src/styles.css" />
+  </head> 
+  <body  >
+    <nav class='nav-bar'>
+      <h2>Money Purse</h2>
+    </nav>
+    <div class='hero'>
+    <img  class='bg-img'/>
+      <div class='input-card'>
+          <h2 id="output" class="outputDiv"></h2>            
+          <div class='input-feild'>
+              <input id="expense-amount" style='padding:0.5rem;border:1px solid black'type='number' placeholder='Amount spend'>
+              <label class='card-symbol'>₹</label>
+          </div>
+          <div class='input-feild'>
+              <label  class='card-symbol'>@</label>
+              <input id='expense-Type' style='padding:0.5rem;border:1px solid black' type='text' placeholder='Spend on'>
+          </div>
+          <button id="addExpense" class='btn card-symbol'>Add</button>
+        </div>
+    </div>
+        <div class='card-with-icon'>
+            <ul class='list-group'>
+                <div id='showAllExpenses'></div>
+              </ul>
+        </div>
+  <div>
+      <script >
+let id=0
+let totalAmount = 0;
+let totalExpense;
+const btnToAddExpense = document.querySelector("#addExpense");
+const element1 = document.querySelector("#expense-Type");
+const outputdiv = document.querySelector("#output");
+const element2 = document.querySelector("#expense-amount");
+const element3 = document.querySelector("#showAllExpenses");
+window.onload=function(){
+  element2.focus()
+ totalExpense=JSON.parse(localStorage.getItem('array'));
+  if(totalExpense){
+      for(let i=0;i<totalExpense.length;i++){
+      totalExpense[i].dateOfExpense=(new Date(totalExpense[i].dateOfExpense))
+      totalAmount=totalAmount+totalExpense[i].price;
+      console.log(totalExpense[i])
+ }
+ outputdiv.textContent = `Total Amount :Rs ${totalAmount}/-`;
+ renderList(totalExpense);
+}else{
+      totalExpense=[]
+} 
+}
+function parseAmount(expenseAmount,expense,expenseType){
+  let expenseAmountInt = parseInt(expenseAmount, 10);
+        expense.desc = expenseType;
+        expense.price = expenseAmountInt;
+        expense.dateOfExpense = new Date()
+        console.log( expense.dateOfExpense)
+        totalExpense.push(expense);
+        localStorage.setItem(`array`, JSON.stringify(totalExpense));
+       return  totalAmount = totalAmount + expenseAmountInt;
+}
+function renderingTheOutput(){
+  outputdiv.textContent = `Total Amount :Rs ${totalAmount}/-`;
+  renderList(totalExpense);
+}
+function showExpense() {
+  const expense = {};
+  let expenseAmount = element2.value;
+  let expenseType = element1.value;
+  element1.value='';
+  element2.value='';
+  if(expenseAmount){
+    totalAmount=parseAmount(expenseAmount,expense,expenseType)
+    renderingTheOutput(totalAmount)
+        
+  }else{
+    alert('Please Enter the Amount')
+  }  
+}
+btnToAddExpense.addEventListener("click", showExpense);
+function toConvertDate(dateOfExpense) {
+  return dateOfExpense.toLocaleDateString("en-us", {
+    year: "numeric",
+    month: "long",
+    day: "numeric"
+  });
+}
+function deleteItem(id ,price) {
+  totalExpense = totalExpense.filter(
+    (expense) => expense.dateOfExpense.valueOf() !== id
+  );
+  localStorage.setItem(`array`, JSON.stringify(totalExpense));
+  totalAmount = totalAmount - price;
+  outputdiv.textContent = `Total Amount :Rs ${totalAmount}/-`;
+  renderList(totalExpense);
+  alert("Expense Deleted")
+}
+function renderList(arrayOfList) {
+  const outerHtml = arrayOfList.map((expenseItem) =>createListItem(expenseItem));
+  const output = outerHtml.join("");
+  element3.innerHTML = output;
+}
+function createListItem({ desc, price, dateOfExpense }) {
+  return `  <li class='list-item' style='width:auto; border: 2px solid black;'>
+  <div class='list-desc'>
+      <span>${desc}</span>
+      <small class='expense-date'>${toConvertDate(dateOfExpense)}</small>
+  </div>
+  <div class='list-amt'>
+      <span style='margin-right:1rem'>Rs ${price}/-</span>
+      <button 
+      type='button' 
+      style='color:red;border:1px solid red;padding:0.5rem' 
+      onclick="deleteItem(${dateOfExpense.valueOf()},${price})" >
+      <svg width="0.88em" height="1em" viewBox="0 0 448 512"><path d="M32 464a48 48 0 0 0 48 48h288a48 48 0 0 0 48-48V128H32zm272-256a16 16 0 0 1 32 0v224a16 16 0 0 1-32 0zm-96 0a16 16 0 0 1 32 0v224a16 16 0 0 1-32 0zm-96 0a16 16 0 0 1 32 0v224a16 16 0 0 1-32 0zM432 32H312l-9.4-18.7A24 24 0 0 0 281.1 0H166.8a23.72 23.72 0 0 0-21.4 13.3L136 32H16A16 16 0 0 0 0 48v32a16 16 0 0 0 16 16h416a16 16 0 0 0 16-16V48a16 16 0 0 0-16-16z" fill="currentColor"></path></svg>
+      </button>
+  </div>
+</li>`;
+}
+      </script>   
+  </body>
+ 
+
+
+</html>

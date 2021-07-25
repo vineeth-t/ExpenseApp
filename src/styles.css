@@ -1,0 +1,41 @@
+@import url("https://chikku-ui.netlify.app/style.css");
+:root {
+  --primary-color: white;
+  --bg-color: rgb(84, 87, 81);
+}
+
+.input-card {
+  width: 80%;
+  padding: 1rem;
+  border-radius: 0.25rem;
+  margin: auto;
+  background-color: transparent;
+}
+.expense-app {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.card-with-icon {
+  margin: auto;
+}
+.card-symbol {
+  color: black;
+  border: 2px solid black;
+}
+.outputDiv {
+  color: black;
+  padding: 1rem;
+}
+.nav-bar {
+  color: var(--primary-color);
+  padding: 1rem;
+  background-color: black;
+}
+.expense-date {
+  font-size: 10px;
+}
+.list-item {
+  background-color: var(--primary-color);
+}
